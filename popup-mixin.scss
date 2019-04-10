@@ -1,0 +1,171 @@
+// responsive with max
+@mixin breakpoint($class) {
+  @if $class == xs {
+    @media (max-width: 375px) { @content; }
+  }
+
+  @else if $class == sm {
+    @media (max-width: 600px) { @content; }
+  }
+
+  @else if $class == md {
+    @media (max-width: 768px) { @content; }
+  }
+
+  @else if $class == lg {
+    @media (max-width: 1366px) { @content; }
+  }
+
+  @else if $class == xl {
+    @media (max-width: 1920px) { @content; }
+  }
+
+  @else {
+    @warn "Breakpoint mixin supports: xs, sm, md, lg, xl";
+  }
+}
+
+// fade section
+@mixin popup-fade {
+  .fade-section{
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+    top: 31px;
+    transition: 0.1s;
+    opacity: 0;
+    @include breakpoint(sm){left: 0;}
+    &.show{
+      opacity: 1;
+      html {
+        overflow-y: hidden !important;
+      }
+      @include breakpoint(sm){
+        top: 10%;
+      }
+    }
+    &.row{
+      margin:0 0 183px 0 ;
+      height: auto;
+    }
+    .centered{
+      display: block;
+      margin: auto;
+      @include breakpoint(sm){
+        margin: unset;
+        padding: 0 15px;
+      }
+    }
+  }
+}
+
+// centered popup from all sides
+@mixin fixed-centered-popup($top: 0, $topMobile: 0, $secWidth: 100%, $secHeight: 80vh){
+  .popup-fade-centered{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 8;
+    top: $top;
+    transition: 0.1s;
+    opacity: 0;
+    left: 0;
+    background: #ffffffeb;
+    @include breakpoint(sm){left: 0;}
+    &.show{
+      opacity: 1;
+      html {
+        overflow-y: hidden !important;
+      }
+      @include breakpoint(sm){
+        top: $topMobile;
+      }
+    }
+    &.row{
+      height: 100%;
+      margin: 0 0 0 0;
+    }
+    .centered{
+      display: block;
+      margin: auto;
+      @include breakpoint(sm){
+        margin: unset;
+        padding: 0 15px;
+      }
+    }
+    .inner-sec{
+      width: $secWidth;
+      height: $secHeight;
+      @include breakpoint(lg){
+        height: $secHeight;
+      }
+      border-radius: 7px;
+      box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
+      background-color: #ffffff;
+      // for centering from all sides
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      @include breakpoint(sm){
+        width: 100%;
+        height: 100%;
+      }
+      .cross{
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@include popup-fade();
+@include fixed-centered-popup(0, 0, 90%, 80vh);
+
+$black: #333f48;
+$red: #e4002b;
+
+.popup{
+  display: none;
+  &.show{
+    display: block;
+  }
+  .content{
+    padding: 10px;
+    .sec{
+      padding: 50px 0 0 0;
+      .head{
+        padding: 5px 10px;
+        border-bottom: 1px solid #e6e6e6;
+        font-weight: 700;
+        background: #f3f3f3;
+        i{
+          padding: 0 10px 0 0 ;
+        }
+      }
+      .listings{
+        margin: 10px 0 0 0;
+        a{
+          text-decoration: none;
+          color: $black;
+          padding: 5px 10px 5px 10px;
+          transition: 0.3s;
+          &.active, &:hover{
+            background: $red;
+            color: #fff;
+            border-radius: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.scrollable{
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
